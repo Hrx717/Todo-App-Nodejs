@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+}
+
+.bg-image {
+    /* The image used */
+    background-image: url("./images/bg.jpg");
+  
+    /* Add the blur effect */
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
+  
+    /* Full height */
+    height: 100%;
+  
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.bg-text {
+    font-weight: bold;
+    position: absolute;
+    top: 43%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 1;
+}
+
+.form-section {
+    width: 33%;
+    margin-bottom: 15px;
+    background-color: rgba(255, 227, 174, 0.785);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    text-align: center;
+}
+
+.form-section h1 {
+    padding: 5px;
+}
+
+#task-input {
+    outline: none;
+    border: none;
+    padding: 10px;
+    width: 68%;
+    margin: 12px 0px;
+    border-radius: 7px;
+}
+
+#add-task-btn {
+    outline: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    margin: 12px 0px;
+    margin-left: 10px;
+    border-radius: 7px;
+    width: 15%;
+}
+
+#todoList {
+    width: 33%;
+    background-color: #fbc9c1;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.each-task-div {
+    margin: 10px 5px;
+}
+
+.each-task-div span {
+    display: inline-block;
+    width: 66%;
+    padding: 5px;
+    margin-left: 12px;
+}
+
+.each-task-div button {
+    cursor: pointer;
+    padding: 6px;
+    margin: 0 5px;
+    border-radius: 5px;
+    border: none;
+}
+
+.add-a-strike {
+    text-decoration: line-through;
+}
