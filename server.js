@@ -3,6 +3,7 @@ const fs = require("fs");
 
 const app = express();
 app.use(express.json());
+const PORT = process.env.PORT || 8000;
 
 let readDB;
 function readFromFile(){
@@ -48,6 +49,6 @@ app.post("/", (req,res) => {
     res.end();
 });
 
-app.listen(8000, ()=> {
-    console.log("server is running at 8000");
+app.listen(PORT, ()=> {
+    console.log("server is running at " + PORT);
 });
