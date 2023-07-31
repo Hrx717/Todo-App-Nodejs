@@ -1,6 +1,3 @@
-const taskInput = document.getElementById("task-input");
-const addTaskBtn = document.getElementById("add-task-btn");
-const addTaskError = document.getElementById("add-task-error");
 const todoList = document.getElementById("todoList");
 
 let taskDB = [];
@@ -53,24 +50,10 @@ const sendDataToServer =  async (data) => {
     });
 
     if(!response.ok) {
-        addTaskError.innerText = "Something went wrong! " + response.status;
+        // addTaskError.innerText = "Something went wrong! " + response.status;
+        console.log("Something went wrong!" + response.status);
     }
 }
-
-addTaskBtn.addEventListener("click", () => {
-    const taskUserInput = taskInput.value.trim().toUpperCase();
-    taskInput.value = "";
-    if(!taskUserInput) {
-        addTaskError.innerText = "Enter valid task/input";
-        setTimeout(()=> {
-            addTaskError.innerText = "";
-        },3000);
-        return;
-    }
-    taskDB.push({task: taskUserInput, complete: false, id: (taskDB.length) +1});
-    showDataToClient([taskDB[taskDB.length-1]]);
-    sendDataToServer(taskDB);
-});
 
 function completeThisTask(e) {
     const element = document.getElementById(e.target.id);

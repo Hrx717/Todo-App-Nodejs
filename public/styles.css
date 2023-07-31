@@ -35,50 +35,15 @@ body, html {
     transform: translate(-50%, -50%);
     width: 100%;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    justify-content:space-around;
+    flex-direction: row;
     z-index: 1;
-}
-
-.form-section {
-    width: 33%;
-    margin-bottom: 15px;
-    background-color: rgba(255, 227, 174, 0.785);
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-    text-align: center;
-}
-
-.form-section h1 {
-    padding: 5px;
-}
-
-#task-input {
-    outline: none;
-    border: none;
-    padding: 10px;
-    width: 68%;
-    margin: 12px 0px;
-    border-radius: 7px;
-}
-
-#add-task-btn {
-    outline: none;
-    border: none;
-    cursor: pointer;
-    padding: 10px;
-    margin: 12px 0px;
-    margin-left: 10px;
-    border-radius: 7px;
-    width: 15%;
 }
 
 #todoList {
     width: 33%;
     background-color: #fbc9c1;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
+    border-radius: 10px;
 }
 
 .each-task-div {
@@ -102,4 +67,48 @@ body, html {
 
 .add-a-strike {
     text-decoration: line-through;
+}
+
+/* adding vertical line for seperation */
+.v1 {
+    position: absolute;
+    border-left: 4px solid black;
+    height: 100vh;
+    top: 0;left: 50%;
+}
+
+/* right side form and multer */
+.container {
+    width: 30%;
+    height: 150px;
+    background-color: antiquewhite;
+    border-radius: 10px;
+}
+.container h2 {
+    text-align: center;
+}
+
+form {
+    text-align: center;
+    margin: 5px 0;
+    width: 100%;
+}
+
+#taskInput {
+    width: 80%;
+    border: none;
+    border-radius: 5px;
+    padding: 7px;
+    margin-bottom: 5px;
+    background-color: #E8F0FE;
+}
+
+#submit {
+    display: block;
+    color: white;
+    background-color: #007BFF;
+    padding: 4px;
+    cursor: pointer;
+    margin: 8px 0;
+    margin-left: 40%;
 }

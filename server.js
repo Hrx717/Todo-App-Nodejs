@@ -41,10 +41,11 @@ app.get("/api/todo", (req,res) => {
 // post request
 app.post("/", (req,res) => {
     const response = req.body;
+    console.log(response);
     if(!response) {
         console.log("no response data, error")
     }
-    writeToFile(JSON.stringify(response));
+    // writeToFile(JSON.stringify(response));
     // readFromFile();
     res.end();
 });
