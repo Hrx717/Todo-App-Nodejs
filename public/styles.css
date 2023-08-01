@@ -41,7 +41,7 @@ body, html {
 }
 
 #todoList {
-    width: 33%;
+    width: 35%;
     background-color: #fbc9c1;
     border-radius: 10px;
 }
@@ -111,4 +111,11 @@ form {
     cursor: pointer;
     margin: 8px 0;
     margin-left: 40%;
+}
+
+/* image styling */
+.img-styling {
+    width: 2em;
+    object-fit: contain;
+    margin-left: 60%;
 }

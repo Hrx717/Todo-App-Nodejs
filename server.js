@@ -1,13 +1,19 @@
 const express = require("express");
 const fs = require("fs");
+const multer  = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 const app = express();
 app.use(express.json());
+app.use(express.static("uploads"))
 const PORT = process.env.PORT || 8000;
+
+app.use(upload.single('pic'));
 
 let readDB;
 function readFromFile(){
     readDB = fs.readFileSync("./taskData.txt", "utf-8");
+    readDB = JSON.parse(readDB);
 }
 
 readFromFile();
@@ -41,14 +47,29 @@ app.get("/api/todo", (req,res) => {
 // post request
 app.post("/", (req,res) => {
     const response = req.body;
-    console.log(response);
     if(!response) {
         console.log("no response data, error")
     }
-    // writeToFile(JSON.stringify(response));
+    writeToFile(JSON.stringify(response));
     // readFromFile();
     res.end();
 });
+
+app.post('/task/media', (req,res) => {
+    // console.log(req.body.taskEntered);
+    // console.log(req.file);
+    readFromFile();
+    const user = {
+        task: req.body.taskEntered,
+        complete: false,
+        id: (readDB.length)+1,
+        file: req.file.filename
+    }
+
+    readDB.push(user);
+    writeToFile(JSON.stringify(readDB));
+    res.redirect('/');
+})
 
 app.listen(PORT, ()=> {
     console.log("server is running at " + PORT);

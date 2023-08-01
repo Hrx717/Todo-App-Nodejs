@@ -1,4 +1,7 @@
 const todoList = document.getElementById("todoList");
+const form = document.querySelector('form');
+const taskInput = document.getElementById('taskInput');
+const dp = document.getElementById('dp');
 
 let taskDB = [];
 
@@ -10,6 +13,12 @@ const showDataToClient = (data) => {
         const taskNode = document.createElement("span");
         taskNode.innerText = element.task;
 
+        if(element.file) {
+            const img = document.createElement('img');
+            img.src = element.file;
+            img.classList.add('img-styling');
+            taskNode.appendChild(img);
+        }
         const completeButton = document.createElement("button");
         if(!element.complete)    completeButton.innerText = "Complete";
         else {completeButton.innerText = "Completed";taskNode.classList.add("add-a-strike");}
@@ -34,7 +43,8 @@ const getDataFromServer = async () => {
     const data = await response.json();
     if(!data)   return;
 
-    taskDB = await JSON.parse(data);
+    // taskDB = await JSON.parse(data);
+    taskDB = data;
     showDataToClient(taskDB);
 }
 
