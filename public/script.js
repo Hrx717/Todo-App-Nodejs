@@ -3,8 +3,6 @@ const addTaskBtn = document.getElementById("add-task-btn");
 const addTaskError = document.getElementById("add-task-error");
 const todoList = document.getElementById("todoList");
 
-let taskDB = [];
-
 const showDataToClient = (data) => {
     if(!data) return;
     data.forEach(element => {
@@ -16,12 +14,12 @@ const showDataToClient = (data) => {
         const completeButton = document.createElement("button");
         if(!element.complete)    completeButton.innerText = "Complete";
         else {completeButton.innerText = "Completed";taskNode.classList.add("add-a-strike");}
-        completeButton.id = element.id;
+        completeButton.id = element._id;
         completeButton.addEventListener('click', completeThisTask);
 
         const deleteButton = document.createElement("button");
         deleteButton.innerText = "Delete";
-        deleteButton.id = element.id;
+        deleteButton.id = element._id;
         deleteButton.addEventListener('click', deleteThisTask);
 
         ithTodo.appendChild(taskNode);
@@ -35,10 +33,8 @@ const showDataToClient = (data) => {
 const getDataFromServer = async () => {
     const response = await fetch(`${window.location.href}api/todo`);
     const data = await response.json();
-    if(!data)   return;
-
-    taskDB = await JSON.parse(data);
-    showDataToClient(taskDB);
+    if(data.length==0) showDataToClient([]);
+    showDataToClient(data);
 }
 
 getDataFromServer();
@@ -67,42 +63,33 @@ addTaskBtn.addEventListener("click", () => {
         },3000);
         return;
     }
-    taskDB.push({task: taskUserInput, complete: false, id: (taskDB.length) +1});
-    showDataToClient([taskDB[taskDB.length-1]]);
-    sendDataToServer(taskDB);
+    const taskBody = {task: taskUserInput, complete: false};
+    showDataToClient([taskBody]);
+    sendDataToServer(taskBody);
 });
 
 function completeThisTask(e) {
+    let content;
     const element = document.getElementById(e.target.id);
-    const parentElement = element.parentElement;
-    const children = todoList.childNodes;
-    let index;
-    for(index=1; index<children.length; index++) {
-        if(children[index] == parentElement) {break;}
-    }
-    taskDB[index-1].complete = !taskDB[index-1].complete;
-    if(!taskDB[index-1].complete) {
-        element.innerText = "Complete";
-        parentElement.children[0].classList.remove("add-a-strike");
+    const parent = element.parentElement;
+    if(e.target.innerText=="Complete") {
+        e.target.innerText = "Completed";
+        content = true;
+        parent.children[0].classList.add('add-a-strike'); 
     }
     else {
-        element.innerHTML = "Completed";
-        parentElement.children[0].classList.add("add-a-strike");
+        e.target.innerText = "Complete";
+        content = false; 
+        parent.children[0].classList.remove('add-a-strike'); 
     }
-    sendDataToServer(taskDB);
+    const taskBody = {id: e.target.id, type: 1,content:content};
+    sendDataToServer(taskBody);
 }
 
 function deleteThisTask(e) {
+    const taskBody = {id: e.target.id, type: 2};
+    sendDataToServer(taskBody);
     const element = document.getElementById(e.target.id);
-    const parentElement = element.parentElement;
-    const children = todoList.childNodes;
-    let index;
-    for(index=1; index<children.length; index++) {
-        if(children[index] == parentElement) {todoList.removeChild(children[index]);;break;}
-    }
-    taskDB.splice(index-1,1);
-    for(let i=index-1; i<taskDB.length;i++) {
-        taskDB[i].id = (i+1);
-    }
-    sendDataToServer(taskDB);
+    const parent = element.parentElement;
+    todoList.removeChild(parent);
 }

@@ -1,20 +1,10 @@
 const express = require("express");
-const fs = require("fs");
+const db = require("./models/db");
+const Tasks = require("./models/Tasks");
 
 const app = express();
 app.use(express.json());
 const PORT = process.env.PORT || 8000;
-
-let readDB;
-function readFromFile(){
-    readDB = fs.readFileSync("./taskData.txt", "utf-8");
-}
-
-readFromFile();
-
-const writeToFile = (content) => {
-    fs.writeFileSync("./taskData.txt", content);
-}
 
 //get requests
 app.get("/", (req,res) => {
@@ -32,23 +22,50 @@ app.get("/script.js", (req,res) => {
     res.sendFile(__dirname + "/public/script.js");
 });
 
-app.get("/api/todo", (req,res) => {
-    readFromFile();
-    if(!readDB) res.json("");
-    else res.json(readDB);
+app.get("/api/todo", async (req,res) => {
+    try {
+        const taskList = await Tasks.find({});
+        res.json(taskList);
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 // post request
-app.post("/", (req,res) => {
-    const response = req.body;
-    if(!response) {
-        console.log("no response data, error")
+app.post("/", async (req,res) => {
+    if(req.body.type === 1) {
+        try {
+            const result = await Tasks.findByIdAndUpdate(req.body.id, {complete: req.body.content});
+            console.log('updated', result);
+        }
+        catch (error) {
+            console.log('error to update: ', error);
+        }
     }
-    writeToFile(JSON.stringify(response));
-    // readFromFile();
-    res.end();
+    else if(req.body.type === 2) {
+        await Tasks.findByIdAndDelete(req.body.id);
+        console.log('deleted');
+    }
+    else {
+        const task = new Tasks(req.body);
+        try {
+            await task.save();
+            console.log("new task added");
+        }
+        catch(err) {
+            console.log("error to save", err);
+        }
+    }
 });
 
-app.listen(PORT, ()=> {
-    console.log("server is running at " + PORT);
+// connect with db and start server
+db.init()
+.then(() => {
+    console.log("db connected");
+    app.listen(PORT, ()=> {
+        console.log("server is running at " + PORT);
+    });
+})
+.catch((err) => {
+    console.log(err);
 });
